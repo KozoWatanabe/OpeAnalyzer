@@ -1,24 +1,55 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## rooms テーブル
 
-Things you may want to cover:
 
-* Ruby version
+|Column	             | Type	        | Options             |
+|--------------------|--------------|---------------------|
+|name                | string	      | null: false         |
 
-* System dependencies
+### Association
+- has_many :operations
+- has_many :staffs, through: :operations
 
-* Configuration
+## staffs テーブル
 
-* Database creation
+|Column	             | Type	        | Options             |
+|--------------------|--------------|---------------------|
+|name                |  string      | null: false         |
+|role_id             |  integer     | null: false         |
 
-* Database initialization
+### Association
+- has_many :operation_staffs
+- has_many :operations, through: :operation_staffs
 
-* How to run the test suite
+## operations テーブル
 
-* Services (job queues, cache servers, search engines, etc.)
+|Column	              | Type	       |Options                  |
+|---------------------|--------------|-------------------------|
+|department	          | string	     | null: false             |
+|entry_time           |	datetime     | null: false             |
+|exit_time            |	datetime     | null: false             |
+|operation_start_time | datetime     | null: false             |
+|operation_end_time   |	datetime     | null: false             |
+|anesthesia_start_time| datetime     | null: false             |
+|anesthesia_end_time  | datetime     | null: false             |
+|room_id              | references   | null: false, foreign_key: true |
+|operation_date       | date         | null: false             |
 
-* Deployment instructions
 
-* ...
+### Association
+- belongs_to :room
+- has_many :operation_staffs
+- has_many :staffs, through: :operation_staffs
+
+
+## operation_staffs テーブル
+
+|Column	          | Type              |	Options                        |
+|-----------------|-------------------|--------------------------------|
+|operation_id   	| references	      | null: false, foreign_key: true |
+|staff_id	        | references	      | null: false, foreign_key: true |
+
+## Association:
+- belongs_to :operation
+- belongs_to :staff
